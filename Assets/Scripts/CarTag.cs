@@ -7,7 +7,7 @@ public class CarTag : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        // Debug.Log("collided with " + collision.gameObject.name);
+        Debug.Log("collided with " + collision.gameObject.name);
     }
 
 }
