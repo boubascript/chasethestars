@@ -8,6 +8,10 @@ public class LevelLayoutGenerator : MonoBehaviour
     public LevelChunkData firstChunk;
 
     private LevelChunkData previousChunk;
+    public GameObject objectFromChunk;
+
+    public Transform star;
+    public Transform obstacle;
 
     public Vector3 spawnOrigin;
 
@@ -39,6 +43,7 @@ public class LevelLayoutGenerator : MonoBehaviour
         for (int i = 0; i < chunksToSpawn; i++)
         {
             PickAndSpawnChunk();
+            spawnObstacles();
         }
     }
     
@@ -91,11 +96,20 @@ public class LevelLayoutGenerator : MonoBehaviour
     {
         LevelChunkData chunkToSpawn = PickNextChunk();
 
-        GameObject objectFromChunk = chunkToSpawn.levelChunks[Random.Range(0, chunkToSpawn.levelChunks.Length)];
+        objectFromChunk = chunkToSpawn.levelChunks[Random.Range(0, chunkToSpawn.levelChunks.Length)];
         previousChunk = chunkToSpawn;
         Instantiate(objectFromChunk, spawnPosition + spawnOrigin, Quaternion.identity);
+        Instantiate(star, spawnPosition + spawnOrigin + new Vector3(0, 250.0f, 0), Quaternion.identity);
 
     }
+
+    void spawnObstacles(){
+        for (int i = 0; i < 200; i++) {
+            Vector3 trackpos = objectFromChunk.transform.GetChild(20).transform.position;
+            Debug.Log(trackpos);
+            Instantiate(obstacle, spawnOrigin + spawnPosition + new Vector3(Random.Range(-previousChunk.chunkSize.x/3,previousChunk.chunkSize.x/3), 42.0f, Random.Range(-previousChunk.chunkSize.y/3, previousChunk.chunkSize.y/3)), Quaternion.identity);
+        }
+   }
 
     public void UpdateSpawnOrigin(Vector3 originDelta)
     {
