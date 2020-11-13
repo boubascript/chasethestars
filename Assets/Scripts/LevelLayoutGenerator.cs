@@ -38,12 +38,13 @@ public class LevelLayoutGenerator : MonoBehaviour
 
     void Start()
     {
+        obstacle.tag = "obstacle";
         previousChunk = firstChunk;
 
         for (int i = 0; i < chunksToSpawn; i++)
         {
             PickAndSpawnChunk();
-            spawnObstacles();
+            // spawnObstacles();
         }
     }
     
@@ -101,6 +102,7 @@ public class LevelLayoutGenerator : MonoBehaviour
         Instantiate(objectFromChunk, spawnPosition + spawnOrigin, Quaternion.identity);
         Instantiate(star, spawnPosition + spawnOrigin + new Vector3(0, 250.0f, 0), Quaternion.identity);
 
+        spawnObstacles();
     }
 
     void spawnObstacles(){

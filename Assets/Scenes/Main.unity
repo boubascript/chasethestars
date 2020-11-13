@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1526980366}
-  m_IndirectSpecularColor: {r: 0.09958943, g: 0.23097162, b: 0.83048147, a: 1}
+  m_IndirectSpecularColor: {r: 0.099589095, g: 0.23097123, b: 0.83047897, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -8051,6 +8051,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 461789ba594a625449a6e423bcafa4ce, type: 2}
   - {fileID: 11400000, guid: 8bb8b7d871ee8de4aac3c7669394992c, type: 2}
   firstChunk: {fileID: 11400000, guid: 629091d918fc54248ab0f6c48245bc16, type: 2}
+  objectFromChunk: {fileID: 0}
+  star: {fileID: 5338762822205648564, guid: d2807d30285e0454a9bab908a340fd48, type: 3}
+  obstacle: {fileID: 400000, guid: f652dd71fc24c7540908f3ec71d5df60, type: 3}
   spawnOrigin: {x: 0, y: 0, z: 0}
   chunksToSpawn: 6
 --- !u!4 &1542454284

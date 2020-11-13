@@ -64,6 +64,8 @@ public class HoverMotor : MonoBehaviour
         Debug.Log(turnInput);
         // v = Input.GetAxis("Verticle");
         // carRigidbody.transform. += Vector3.ProjectOnPlane(Camera.main.transform.up,Vector3.up)*0.8f;
+
+        // MANUAL
         // turnInput = Input.GetAxis("Horizontal");
        
     }
@@ -121,7 +123,10 @@ public class HoverMotor : MonoBehaviour
         
 
         carRigidbody.transform.Rotate(new Vector3(0f, turnInput, 0f));
+
+        // MANUAL
         // carRigidbody.transform.Rotate(new Vector3(0f, smoothedTurn * turnSpeed, 0f));
+
         // carRigidbody.transform.Rotate(new Vector3(0f, turnInput*-1, 0f));
         // carRigidbody.transform.Rotate();
         // new Vector3(0f, smoothedTurn * turnSpeed, 0f)
