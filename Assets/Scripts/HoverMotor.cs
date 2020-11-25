@@ -23,48 +23,30 @@ public class HoverMotor : MonoBehaviour
     private bool reversing = false;
     private bool lightsOn = false;
 
+    public AudioSource engine;
+
+    private bool manualMode;
+
     void Awake()
     {
         carRigidbody = GetComponent<Rigidbody>();
         controller = GetComponent<CharacterController>();
+        manualMode = true;
     }
 
     void Update()
     {
-        if (Input.GetButton("Vertical"))
-        {
-            accelerating = true;
-        }
-        else
-        {
-            accelerating = false;
-            if (Input.GetButton("Reverse"))
-            {
-                reversing = true;
-            }
-            else
-            {
-                reversing = false;
-            }
-        }
-
-        
-
-        // VR Yaw Turn Control
+        accelerating = Input.GetButton("Vertical"); 
+        reversing = Input.GetButton("Reverse");
 
         amove = Camera.main.transform.localRotation;
-        turnInput = (amove[1])*10 ;
+        turnInput = !manualMode ? (amove[1]) * 10 : Input.GetAxis("Horizontal");
         v = amove[0]*-5;
-        // turnInput = Input.GetAxis("Horizontal");
        
     }
 
     void FixedUpdate()
     {
-        
-       
-
-
         Ray ray = new Ray(transform.position, -transform.up);
         RaycastHit hit;
 
@@ -84,13 +66,21 @@ public class HoverMotor : MonoBehaviour
             carRigidbody.AddForce(transform.forward * speed, ForceMode.Acceleration);
             //controller.Move(targetdirection * Time.deltaTime);
             reversing = false;
+
+            if(!engine.isPlaying){
+                engine.Play();
+            }
         }
         else if (reversing)
         {
+            if(!engine.isPlaying){
+                engine.Play();
+            }
             carRigidbody.AddForce(transform.forward * -speed * .5f, ForceMode.Acceleration);
         }
         else
         {
+            engine.Stop();
             burnerParticles.Stop();
         }
         float height = (hoverHeight - hit.distance) / hoverHeight;
@@ -98,7 +88,7 @@ public class HoverMotor : MonoBehaviour
         carRigidbody.AddForce(force_down, ForceMode.Acceleration);
 
         carRigidbody.AddForce(transform.forward * 1.5f, ForceMode.Impulse);
-        carRigidbody.transform.Rotate(new Vector3(0f, turnInput, 0f));
+        carRigidbody.transform.Rotate(new Vector3(0f, !manualMode ? turnInput : smoothedTurn * turnSpeed, 0f));
 
        
     }

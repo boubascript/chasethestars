@@ -124,13 +124,13 @@ public class LevelLayoutGenerator : MonoBehaviour
     }
 
     void spawnPointBoosts(){
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 75; i++) {
             Instantiate(pointBoost, spawnOrigin + spawnPosition + new Vector3(Random.Range(-previousChunk.chunkSize.x/3,previousChunk.chunkSize.x/3), 42.0f, Random.Range(-previousChunk.chunkSize.y/3, previousChunk.chunkSize.y/3)), Quaternion.identity);
         }
     }
 
     void spawnShields(){
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 100; i++) {
             Instantiate(shield, spawnOrigin + spawnPosition + new Vector3(Random.Range(-previousChunk.chunkSize.x,previousChunk.chunkSize.x), 42.0f, Random.Range(-previousChunk.chunkSize.x, previousChunk.chunkSize.x)), Quaternion.identity);
         }
     }

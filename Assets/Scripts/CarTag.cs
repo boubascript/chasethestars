@@ -7,15 +7,20 @@ public class CarTag : MonoBehaviour
     private float runtime = 0.0f;
     private float score = 0.0f;
     private float shieldTime = 0.0f;
-    private float shieldMaxTime = 10.0f;
+    private float shieldMaxTime = 30.0f;
     private float bonusWeight = 5.0f;
     private int crashCount = 0, bonuses = 0, shieldHits = 0;
     private bool hasShield = false;
-    private GameObject[] shields, obstacles;
+
     private GameObject hovercar;
     private Rigidbody hovercarBody;
+    private GameObject statsText;
+    private GameObject[] shields, obstacles;
     private LevelLayoutGenerator layoutGenerator;
     private HoverMotor motorScript;
+
+    public AudioSource power;
+    public AudioSource crash;
 
     void Awake()
     {
@@ -23,6 +28,8 @@ public class CarTag : MonoBehaviour
         hovercarBody = hovercar.GetComponent<Rigidbody>();
         layoutGenerator = GameObject.Find("LevelGenerator").GetComponent<LevelLayoutGenerator>();
         motorScript = GetComponent<HoverMotor>();
+        statsText = GameObject.Find("StatsText");
+
     }
 
     void Update()
@@ -41,25 +48,40 @@ public class CarTag : MonoBehaviour
                 
             }
         }
+
+        statsText.GetComponent<TextMesh>().text = "SCORE: " + score + " Bonuses: " + bonuses + " Time: " + runtime + " seconds " +
+            "\nPOV: " + (Camera.main.name == "Cam2" ? "First Person" : "Third Person") + 
+            " Total Lives: " + (3 - crashCount);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.tag == "obstacle"){
+            crash.Play();
             score = runtime + bonusWeight * bonuses; 
             crashCount++;
-            hovercar.transform.position =  layoutGenerator.spawnOrigin + new Vector3(0.0f, 40.0f, 840.0f);
-            hovercarBody.velocity = crashCount > 5 ? Vector3.up * 10.0f : Vector3.zero;
-            hovercarBody.angularVelocity = Vector3.zero;
+            if(crashCount >= 3){
+                hovercar.transform.position = layoutGenerator.spawnOrigin + new Vector3(0.0f, 40.0f, 840.0f);
+                hovercarBody.velocity = Vector3.zero;
+                hovercarBody.angularVelocity = Vector3.zero;
+                crashCount = 0;
+            }
 
             Debug.Log("SCORE: " + score + " Time: " + runtime + " seconds " + "Bonuses: " + bonuses + 
             " POV: " + (Camera.main.name == "Cam2" ? "First Person" : "Third Person") + 
             " Total CRASHES: " + crashCount);
+
+            statsText.GetComponent<TextMesh>().text = "SCORE: " + score + " Time: " + runtime + " seconds " + "Bonuses: " + bonuses + 
+            "\nPOV: " + (Camera.main.name == "Cam2" ? "First Person" : "Third Person") + 
+            " Total Lives: " + (3 - crashCount);
+
+            statsText.SetActive(true);
             runtime = 0.0f;
         }
     }
 
-    void OnTriggerEnter(Collider other) {
+    private void OnTriggerEnter(Collider other) {
+        power.Play();
         if (other.gameObject.tag == "shield") {
             hasShield = true;
             other.gameObject.SetActive(false);
