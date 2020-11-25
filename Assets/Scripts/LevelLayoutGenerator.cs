@@ -12,6 +12,8 @@ public class LevelLayoutGenerator : MonoBehaviour
 
     public Transform star;
     public Transform obstacle;
+    public Transform pointBoost;
+    public Transform shield;
 
     public Vector3 spawnOrigin;
 
@@ -39,12 +41,19 @@ public class LevelLayoutGenerator : MonoBehaviour
     void Start()
     {
         obstacle.tag = "obstacle";
+        pointBoost.tag = "pointBoost";
+        shield.tag = "shield";
+        obstacle.gameObject.GetComponent<MeshCollider>().convex = true;
+        shield.gameObject.GetComponent<MeshCollider>().convex = true;
+        shield.gameObject.GetComponent<MeshCollider>().isTrigger = true;
+        pointBoost.gameObject.GetComponent<MeshCollider>().convex = true;
+        pointBoost.gameObject.GetComponent<MeshCollider>().isTrigger = true;
+
         previousChunk = firstChunk;
 
         for (int i = 0; i < chunksToSpawn; i++)
         {
             PickAndSpawnChunk();
-            // spawnObstacles();
         }
     }
     
@@ -103,15 +112,28 @@ public class LevelLayoutGenerator : MonoBehaviour
         Instantiate(star, spawnPosition + spawnOrigin + new Vector3(0, 250.0f, 0), Quaternion.identity);
 
         spawnObstacles();
+        spawnPointBoosts();
+        spawnShields();
     }
 
     void spawnObstacles(){
         for (int i = 0; i < 200; i++) {
-            Vector3 trackpos = objectFromChunk.transform.GetChild(20).transform.position;
-            Debug.Log(trackpos);
-            Instantiate(obstacle, spawnOrigin + spawnPosition + new Vector3(Random.Range(-previousChunk.chunkSize.x/3,previousChunk.chunkSize.x/3), 42.0f, Random.Range(-previousChunk.chunkSize.y/3, previousChunk.chunkSize.y/3)), Quaternion.identity);
+            // Vector3 trackpos = objectFromChunk.transform.GetChild(20).transform.position;
+            Instantiate(obstacle.gameObject, spawnOrigin + spawnPosition + new Vector3(Random.Range(-previousChunk.chunkSize.x/3,previousChunk.chunkSize.x/3), 42.0f, Random.Range(-previousChunk.chunkSize.y/3, previousChunk.chunkSize.y/3)), Quaternion.identity);
         }
-   }
+    }
+
+    void spawnPointBoosts(){
+        for (int i = 0; i < 100; i++) {
+            Instantiate(pointBoost, spawnOrigin + spawnPosition + new Vector3(Random.Range(-previousChunk.chunkSize.x/3,previousChunk.chunkSize.x/3), 42.0f, Random.Range(-previousChunk.chunkSize.y/3, previousChunk.chunkSize.y/3)), Quaternion.identity);
+        }
+    }
+
+    void spawnShields(){
+        for (int i = 0; i < 50; i++) {
+            Instantiate(shield, spawnOrigin + spawnPosition + new Vector3(Random.Range(-previousChunk.chunkSize.x,previousChunk.chunkSize.x), 42.0f, Random.Range(-previousChunk.chunkSize.x, previousChunk.chunkSize.x)), Quaternion.identity);
+        }
+    }
 
     public void UpdateSpawnOrigin(Vector3 originDelta)
     {

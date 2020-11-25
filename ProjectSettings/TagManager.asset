@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Cam1
   - obstacle
+  - pointBoost
+  - shield
   layers:
   - Default
   - TransparentFX

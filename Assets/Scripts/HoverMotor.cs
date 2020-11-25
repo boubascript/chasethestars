@@ -48,24 +48,33 @@ public class HoverMotor : MonoBehaviour
             }
         }
 
-        if (Input.GetButtonDown("Jump"))
-        {
-            lightsOn = !lightsOn;
-            headlight.enabled = lightsOn;
-        }
+        // Manual spotlight control
+
+        // if (Input.GetButtonDown("Jump"))
+        // {
+        //     lightsOn = !lightsOn;
+        //     headlight.enabled = lightsOn;
+        // }
+
+        // ???
+
         // fmove = Camera.main.transform.rotation.eulerAngles;
         // fmove = Vector3.Normalize(fmove);
-        amove = Camera.main.transform.localRotation;
         // amove = Quaternion.Inverse(amove);
         // fmove.y = fmove.z;
         // (Camera.main.transform.rotation[1])*9.0f
-        turnInput = (amove[1])*-10 ;
-        v = amove[0]*-5;
-        Debug.Log(turnInput);
         // v = Input.GetAxis("Verticle");
         // carRigidbody.transform. += Vector3.ProjectOnPlane(Camera.main.transform.up,Vector3.up)*0.8f;
 
+        // VR Yaw Turn Control
+
+        amove = Camera.main.transform.localRotation;
+        turnInput = (amove[1])*-10 ;
+        v = amove[0]*-5;
+        Debug.Log(turnInput);
+
         // MANUAL
+
         // turnInput = Input.GetAxis("Horizontal");
        
     }
@@ -124,9 +133,11 @@ public class HoverMotor : MonoBehaviour
 
         carRigidbody.transform.Rotate(new Vector3(0f, turnInput, 0f));
 
-        // MANUAL
+        // MANUAL 
+
         // carRigidbody.transform.Rotate(new Vector3(0f, smoothedTurn * turnSpeed, 0f));
 
+        // ???
         // carRigidbody.transform.Rotate(new Vector3(0f, turnInput*-1, 0f));
         // carRigidbody.transform.Rotate();
         // new Vector3(0f, smoothedTurn * turnSpeed, 0f)
