@@ -48,33 +48,13 @@ public class HoverMotor : MonoBehaviour
             }
         }
 
-        // Manual spotlight control
-
-        // if (Input.GetButtonDown("Jump"))
-        // {
-        //     lightsOn = !lightsOn;
-        //     headlight.enabled = lightsOn;
-        // }
-
-        // ???
-
-        // fmove = Camera.main.transform.rotation.eulerAngles;
-        // fmove = Vector3.Normalize(fmove);
-        // amove = Quaternion.Inverse(amove);
-        // fmove.y = fmove.z;
-        // (Camera.main.transform.rotation[1])*9.0f
-        // v = Input.GetAxis("Verticle");
-        // carRigidbody.transform. += Vector3.ProjectOnPlane(Camera.main.transform.up,Vector3.up)*0.8f;
+        
 
         // VR Yaw Turn Control
 
         amove = Camera.main.transform.localRotation;
-        turnInput = (amove[1])*-10 ;
+        turnInput = (amove[1])*10 ;
         v = amove[0]*-5;
-        Debug.Log(turnInput);
-
-        // MANUAL
-
         // turnInput = Input.GetAxis("Horizontal");
        
     }
@@ -82,17 +62,7 @@ public class HoverMotor : MonoBehaviour
     void FixedUpdate()
     {
         
-        /*
-        Vector3 camForward = Camera.main.transform.forward;
-        Vector3 camRight = Camera.main.transform.right;
-        Vector3 movement = v * camForward + turnInput * camRight;
-        */
-        
-        // movement = transform.InverseTransformDirection(movement);
-        // movement = Vector3.ProjectOnPlane(movement, groundNormal);
-     
-        // targetdirection.y = 0.0f;
-        
+       
 
 
         Ray ray = new Ray(transform.position, -transform.up);
@@ -117,30 +87,20 @@ public class HoverMotor : MonoBehaviour
         }
         else if (reversing)
         {
-            
             carRigidbody.AddForce(transform.forward * -speed * .5f, ForceMode.Acceleration);
         }
         else
         {
             burnerParticles.Stop();
         }
-        // carRigidbody.AddForce(targetdirection * speed);
-        // forward=Camera.main.transform.TransformDirection(Vector3 (0,0,0));
-        // forward.y = forward.x*10.0f;
-        // forward.z = 0;
-        // forward.x = 0;
-        
+        float height = (hoverHeight - hit.distance) / hoverHeight;
+        Vector3 force_down = Vector3.up* height* -50.0f;
+        carRigidbody.AddForce(force_down, ForceMode.Acceleration);
 
+        carRigidbody.AddForce(transform.forward * 1.5f, ForceMode.Impulse);
         carRigidbody.transform.Rotate(new Vector3(0f, turnInput, 0f));
 
-        // MANUAL 
-
-        // carRigidbody.transform.Rotate(new Vector3(0f, smoothedTurn * turnSpeed, 0f));
-
-        // ???
-        // carRigidbody.transform.Rotate(new Vector3(0f, turnInput*-1, 0f));
-        // carRigidbody.transform.Rotate();
-        // new Vector3(0f, smoothedTurn * turnSpeed, 0f)
+       
     }
 
 }
